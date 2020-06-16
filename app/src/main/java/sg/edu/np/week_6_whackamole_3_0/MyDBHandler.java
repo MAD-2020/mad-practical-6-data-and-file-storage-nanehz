@@ -93,43 +93,36 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public void addUser(UserData userData)
     {
-            /* HINT:
-                This adds the user to the database based on the information given.
-
-             */
-        ArrayList<Integer> userLevels = userData.getLevels();
+        ArrayList<Integer> userLevels =userData.getLevels();
         ArrayList<Integer> userScores = userData.getScores();
-
-
         SQLiteDatabase db = this.getWritableDatabase();
 
-        for (int i =0; i < userLevels.size(); i++)
-        {
+        for (int i = 0; i < 10; i++){
             ContentValues values = new ContentValues();
             values.put(COLUMN_USERNAME, userData.getMyUserName());
             values.put(COLUMN_PASSWORD, userData.getMyPassword());
             values.put(COLUMN_LEVEL, userLevels.get(i));
             values.put(COLUMN_SCORE, userScores.get(i));
+            Log.v("Whack-A-Mole 3.0", FILENAME + ": Adding data for Database: " + values.toString());
             db.insert(TABLE_NAME, null, values);
-            Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
         }
-
         db.close();
 
+            /* HINT:
+                This adds the user to the database based on the information given.
+                Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
+             */
     }
-
     public UserData findUser(String username)
     {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE "  + COLUMN_USERNAME + " = \"" + username + "\"";
-
-        Log.v(TAG, FILENAME +": Find user form database: " + query);
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = \"" + username + "\"";
+        Log.v("Whack-A-Mole 3.0", FILENAME + ": Find user from database: " + query);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
 
         UserData userData = new UserData();
-
         ArrayList<Integer> userLevels = new ArrayList<Integer>();
         ArrayList<Integer> userScores = new ArrayList<Integer>();
 

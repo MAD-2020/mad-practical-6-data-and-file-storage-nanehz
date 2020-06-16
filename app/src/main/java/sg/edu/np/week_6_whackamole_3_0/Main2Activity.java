@@ -45,6 +45,14 @@ public class Main2Activity extends AppCompatActivity {
 
         final MyDBHandler myDatabase = new MyDBHandler(this,null,null,1);
 
+        cancelBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
+            }
+        });
+
         createBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

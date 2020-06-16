@@ -52,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if (isValidUser(username_input,password_input) == true)
                     {
-                        startActivity(new Intent(getApplicationContext(),Main3Activity.class));
+                        //putting extra so that when in main3activity we can user get string to retrieve the current username that is logged in
+                        Intent intent = new Intent(MainActivity.this, Main3Activity.class);
+                        intent.putExtra("userName", username_input);
+                        startActivity(intent);
                     }
                     else
                     {

@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 public class CustomScoreViewHolder extends RecyclerView.ViewHolder {
     /* Hint:
         1. This is a customised view holder for the recyclerView list @ levels selection page
@@ -14,9 +16,12 @@ public class CustomScoreViewHolder extends RecyclerView.ViewHolder {
     private static final String FILENAME = "CustomScoreViewHolder.java";
     private static final String TAG = "Whack-A-Mole3.0!";
 
+    TextView lvl,score;
+
     public CustomScoreViewHolder(final View itemView){
         super(itemView);
-
+        lvl = itemView.findViewById(R.id.Level);
+        score = itemView.findViewById(R.id.Score);
         /* Hint:
         This method dictates the viewholder contents and links the widget to the objects for manipulation.
          */

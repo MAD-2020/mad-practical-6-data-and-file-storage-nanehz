@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 public class Main3Activity extends AppCompatActivity {
     /* Hint:
@@ -25,6 +26,10 @@ public class Main3Activity extends AppCompatActivity {
             e. Each location of the mole is randomised.
         5. There is an option return to the login page.
      */
+
+    MyDBHandler myDatabase;
+
+
     private static final String FILENAME = "Main3Activity.java";
     private static final String TAG = "Whack-A-Mole3.0!";
 
@@ -32,6 +37,30 @@ public class Main3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
+
+
+        Button backToLogin = findViewById(R.id.backToLogin);
+        RecyclerView levelsPage = findViewById(R.id.recyclerView);
+        myDatabase = new MyDBHandler(this, null, null, 1);
+        Intent intent = getIntent();
+        //here we are retrieving the username that we put in mainactivity so that we know which is the current user that is logged in
+        String userName = intent.getStringExtra("userName");
+        UserData userData = myDatabase.findUser(userName);
+
+        CustomScoreAdaptor adaptor = new CustomScoreAdaptor(userData);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        levelsPage.setAdapter(adaptor);
+        levelsPage.setLayoutManager(layoutManager);
+        Log.v(TAG, FILENAME + ": Show level for User: "+ userName);
+
+
+        // go back to login page
+        backToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));}
+        });
+
         /* Hint:
         This method receives the username account data and looks up the database for find the
         corresponding information to display in the recyclerView for the level selections page.
