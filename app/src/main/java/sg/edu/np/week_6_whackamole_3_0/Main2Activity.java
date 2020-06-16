@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -55,7 +57,11 @@ public class Main2Activity extends AppCompatActivity {
                 }
                 else
                 {
-                    UserData newUser = new UserData(username_input.getText().toString().trim(),password_input.getText().toString().trim(),new ArrayList<Integer>(), new ArrayList<Integer>());
+                    ArrayList<Integer> Scores = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+                    ArrayList<Integer> Levels = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0,0));
+
+                    UserData newUser = new UserData(username_input.getText().toString(),password_input.getText().toString(),Scores, Levels);
+
                     myDatabase.addUser(newUser);
                     Log.v(TAG, FILENAME + ": New user created successfully!");
                     Toast.makeText(getApplicationContext(), "New user created successfully!", Toast.LENGTH_SHORT).show();

@@ -97,15 +97,24 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 This adds the user to the database based on the information given.
 
              */
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USERNAME, userData.getMyUserName());
-        values.put(COLUMN_PASSWORD, userData.getMyPassword());
+        ArrayList<Integer> userLevels = userData.getLevels();
+        ArrayList<Integer> userScores = userData.getScores();
+
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.insert(TABLE_NAME, null, values);
+        for (int i =0; i < userLevels.size(); i++)
+        {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_USERNAME, userData.getMyUserName());
+            values.put(COLUMN_PASSWORD, userData.getMyPassword());
+            values.put(COLUMN_LEVEL, userLevels.get(i));
+            values.put(COLUMN_SCORE, userScores.get(i));
+            db.insert(TABLE_NAME, null, values);
+            Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
+        }
+
         db.close();
-        Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
 
     }
 
@@ -132,6 +141,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 userScores.add(cursor.getInt(3));
             }
             while (cursor.moveToNext());
+            Log.v(TAG, FILENAME + ": QueryData: " + userData.getLevels().toString() + userData.getScores().toString());
             userData.setLevels(userLevels);
             userData.setScores(userScores);
         }
