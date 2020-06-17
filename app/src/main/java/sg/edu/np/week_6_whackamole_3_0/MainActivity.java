@@ -20,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     EditText Username,Password;
     Button login;
-    MyDBHandler myDatabase;
     TextView newUser;
+    MyDBHandler myDatabase;
     /*
         1. This is the main page for user to log in
         2. The user can enter - Username and Password
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         Password = findViewById(R.id.password);
         login = findViewById(R.id.Login);
         newUser = findViewById(R.id.NewUser);
+        myDatabase = new MyDBHandler(this,"WhackAMole.db",null,1);
+
+
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
+
     protected void onStop(){
         super.onStop();
         finish();
@@ -99,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean isValidUser(String userName, String password){
 
-        myDatabase = new MyDBHandler(this, null, null, 1);
+        myDatabase = new MyDBHandler(this, "WhackAMole.db", null, 1);
         boolean userBool = false;
 
         UserData userData = myDatabase.findUser(userName);

@@ -57,8 +57,8 @@ public class CustomScoreAdaptor extends RecyclerView.Adapter<CustomScoreViewHold
         Log.v(TAG, FILENAME+ ": Load level " + position +" for: " + list_members.getMyUserName());
          */
 
-        final Integer lvls = Levels.get(position);
-        final Integer scores = Scores.get(position);
+        final int lvls = Levels.get(position);
+        final int scores = Scores.get(position);
 
         Log.v("TEST", "Levels" + player.getLevels());
 

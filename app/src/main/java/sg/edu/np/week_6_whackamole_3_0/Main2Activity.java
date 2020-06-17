@@ -43,7 +43,7 @@ public class Main2Activity extends AppCompatActivity {
         username_input = findViewById(R.id.username_input);
         password_input = findViewById(R.id.password_input);
 
-        final MyDBHandler myDatabase = new MyDBHandler(this,null,null,1);
+        final MyDBHandler myDatabase = new MyDBHandler(this,"WhackAMole.db",null,1);
 
         cancelBTN.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,26 +56,39 @@ public class Main2Activity extends AppCompatActivity {
         createBTN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<Integer> Scores = new ArrayList<>();
+                ArrayList<Integer> Levels = new ArrayList<>();
                 UserData userData = myDatabase.findUser(username_input.getText().toString().trim());
 
-                if (userData != null)
+                if (userData == null)
                 {
-                    Log.v(TAG, FILENAME + ": User already exist during new user creation!");
-                    Toast.makeText(getApplicationContext(), "User already exist during new user creation!", Toast.LENGTH_SHORT).show();
+                    for (int i = 0; i <10; i++)
+                    {
+                        Levels.add(i);
+                        Scores.add(0);
+                    }
+                    myDatabase.addUser(new UserData(username_input.getText().toString(),password_input.getText().toString(),Levels,Scores));
+                    Log.v(TAG, FILENAME + ": New user created successfully!");
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 }
                 else
                 {
-                    ArrayList<Integer> Scores = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
-                    ArrayList<Integer> Levels = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0,0));
+                    Log.v(TAG, FILENAME + ": User already exist during new user creation!");
+                    Toast.makeText(getApplicationContext(), "User already exist during new user creation!", Toast.LENGTH_SHORT).show();
+//                    ArrayList<Integer> Scores = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
+//                    ArrayList<Integer> Levels = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0,0));
 
-                    UserData newUser = new UserData(username_input.getText().toString(),password_input.getText().toString(),Scores, Levels);
 
-                    myDatabase.addUser(newUser);
-                    Log.v(TAG, FILENAME + ": New user created successfully!");
-                    Toast.makeText(getApplicationContext(), "New user created successfully!", Toast.LENGTH_SHORT).show();
-                    username_input.setText("");
-                    password_input.setText("");
-                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+
+//
+//                    UserData newUser = new UserData(username_input.getText().toString(),password_input.getText().toString(),Scores, Levels);
+//
+//                    myDatabase.addUser(newUser);
+//                    Log.v(TAG, FILENAME + ": New user created successfully!");
+//                    Toast.makeText(getApplicationContext(), "New user created successfully!", Toast.LENGTH_SHORT).show();
+//                    username_input.setText("");
+//                    password_input.setText("");
+//                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
 
                 }
 

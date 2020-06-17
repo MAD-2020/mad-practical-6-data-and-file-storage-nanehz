@@ -60,10 +60,13 @@ public class MyDBHandler extends SQLiteOpenHelper {
         /* HINT:
             This is used to init the database.
          */
+
         super(context,DATABASE_NAME,factory,DATABASE_VERSION);
         Log.v(TAG,"Database initialized");
 
     }
+
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -71,13 +74,20 @@ public class MyDBHandler extends SQLiteOpenHelper {
             This is triggered on DB creation.
             Log.v(TAG, "DB Created: " + CREATE_ACCOUNTS_TABLE);
          */
-//        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNT +
-//                 "( " + COLUMN_USERNAME + "  TEXT PRIMARY KEY , "+ COLUMN_PASSWORD + " TEXT, "+ COLUMN_LEVEL + " INTEGER, "+ COLUMN_SCORE + " INTEGER)";
-        String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_NAME + " ("
-                +   COLUMN_USERNAME + " TEXT, " + COLUMN_PASSWORD + " TEXT, " + COLUMN_LEVEL + " INTEGER, "
-                + COLUMN_SCORE + " INTEGER" + ")";
 
-        db.execSQL(CREATE_USER_TABLE);
+        String CREATE_ACCOUNTS_TABLE = "CREATE TABLE " + TABLE_NAME +
+                "(" + COLUMN_USERNAME + " STRING, " +
+                COLUMN_PASSWORD + " TEXT, " +
+                COLUMN_LEVEL + " INTEGER, " +
+                COLUMN_SCORE + " INTEGER, " +
+                "PRIMARY KEY (" + COLUMN_USERNAME + ", " + COLUMN_LEVEL + "))";
+        db.execSQL(CREATE_ACCOUNTS_TABLE);
+
+    }
+
+    public void clearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL( " DROP TABLE IF EXISTS " + TABLE_NAME);
 
     }
     @Override
@@ -93,29 +103,30 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public void addUser(UserData userData)
     {
-        ArrayList<Integer> userLevels =userData.getLevels();
-        ArrayList<Integer> userScores = userData.getScores();
+        /* HINT:
+            This adds the user to the database based on the information given.
+            Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
+         */
+        ArrayList<Integer> highScoreList = userData.getScores();
         SQLiteDatabase db = this.getWritableDatabase();
+        for (int i = 1; i <= 10; i++) {
 
-        for (int i = 0; i < 10; i++){
             ContentValues values = new ContentValues();
             values.put(COLUMN_USERNAME, userData.getMyUserName());
             values.put(COLUMN_PASSWORD, userData.getMyPassword());
-            values.put(COLUMN_LEVEL, userLevels.get(i));
-            values.put(COLUMN_SCORE, userScores.get(i));
-            Log.v("Whack-A-Mole 3.0", FILENAME + ": Adding data for Database: " + values.toString());
+            values.put(COLUMN_SCORE, highScoreList.get(i-1));
+            values.put(COLUMN_LEVEL, i);
             db.insert(TABLE_NAME, null, values);
+            Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
         }
-        db.close();
 
-            /* HINT:
-                This adds the user to the database based on the information given.
-                Log.v(TAG, FILENAME + ": Adding data for Database: " + values.toString());
-             */
+        db.close();
     }
     public UserData findUser(String username)
     {
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USERNAME + " = \"" + username + "\"";
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE "
+                + COLUMN_USERNAME
+                + " = \"" + username + "\"";
         Log.v("Whack-A-Mole 3.0", FILENAME + ": Find user from database: " + query);
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -134,7 +145,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 userScores.add(cursor.getInt(3));
             }
             while (cursor.moveToNext());
-            Log.v(TAG, FILENAME + ": QueryData: " + userData.getLevels().toString() + userData.getScores().toString());
             userData.setLevels(userLevels);
             userData.setScores(userScores);
         }
@@ -162,6 +172,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
             }
          */
     }
+
     public boolean deleteAccount(String username) {
         /* HINT:
             This finds and delete the user data in the database.

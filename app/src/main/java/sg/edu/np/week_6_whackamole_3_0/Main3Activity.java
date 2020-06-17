@@ -41,7 +41,7 @@ public class Main3Activity extends AppCompatActivity {
 
         Button backToLogin = findViewById(R.id.backToLogin);
         RecyclerView levelsPage = findViewById(R.id.recyclerView);
-        myDatabase = new MyDBHandler(this, null, null, 1);
+        myDatabase = new MyDBHandler(this, "WhackAMole.db", null, 1);
         Intent intent = getIntent();
         //here we are retrieving the username that we put in mainactivity so that we know which is the current user that is logged in
         String userName = intent.getStringExtra("userName");
